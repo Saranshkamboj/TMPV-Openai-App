@@ -152,7 +152,7 @@ async def submit_form(
     file_name = f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{file_name}"
     background_tasks.add_task(upload_file, file, contents, model_name)
     x = BlobStorage(blob_service_client)
-    return x.generate_sas_url(f"{file_name}-uf.json")
+    return x.generate_sas_url(f"{file_name}-uf.json") 
 
 
 @app.post("/vehicle-insights")
@@ -229,6 +229,7 @@ async def vehicle_insights(request: Request):
 
         start_time = time.time()
         formatted_context, context = await cr.retrieve(search_term, model_name, 5)
+        print(context)
         end_time = time.time()
         context_retrieval_time = end_time - start_time
 

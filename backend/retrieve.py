@@ -14,7 +14,7 @@ class ContextRetrieval:
 
         embedding = await self.openai_client.embeddings.create(
             input=[text], model="tmpv-dev-embedding"
-        ) 
+        )       
 
         return embedding.data[0].embedding
 
