@@ -40,14 +40,12 @@ class BlobStorage:
             except Exception as e:
                 raise Exception(f"Failed to upload blob: {str(e)}")
             sas_url = self.generate_sas_url(file_name)
-            file_url = blob_client.url
-            print(sas_url)
             # await self.blob_service_client.close()
             return sas_url
 
         except Exception as e:
             print(f"Error in upload_to_blob_storage: {str(e)}")
-            raise e
+            # raise e
 
     async def upload_json(self, data, filename):
         try:
@@ -56,7 +54,7 @@ class BlobStorage:
             )
             blob_client = container_client.get_blob_client(filename)
             # Check if the blob already exists
-            # print(data)
+
             if await blob_client.exists():
                 # Download existing data
                 try:
@@ -82,7 +80,43 @@ class BlobStorage:
             print("Blob updated successfully.")
 
         except Exception as e:
-            raise e
+            print(f"Error: {str(e)}")
+
+    async def upload_extracted_text(self, data, filename, folder_name):
+        try:
+
+            try:
+                container_client = self.blob_service_client.get_container_client(
+                    self.container_name
+                )
+                await container_client.create_container()
+            except Exception as e:
+                if "ContainerAlreadyExists" not in str(e):
+                    raise Exception(f"Failed to create container: {str(e)}")
+
+            # Check if the folder exists
+            async for blob in container_client.list_blobs(name_starts_with=folder_name):
+                if blob.name.startswith(folder_name):
+                    folder_exists = True
+                    break
+            else:
+                folder_exists = False
+
+            # If folder does not exist, create a dummy blob to create the folder
+            if not folder_exists:
+                dummy_blob_name = f"{folder_name}/.dummy"
+                dummy_blob_client = container_client.get_blob_client(dummy_blob_name)
+                await dummy_blob_client.upload_blob(b"", overwrite=True)
+
+            filename = filename[:-4] + ".json"
+
+            # Upload the JSON data
+            blob_client = container_client.get_blob_client(f"{folder_name}/{filename}")
+            await blob_client.upload_blob(json.dumps(data), overwrite=True)
+
+            print(f"JSON data uploaded to {folder_name}/{filename}")
+
+        except Exception as e:
             print(f"Error: {str(e)}")
 
     def generate_sas_url(self, blob_name):
@@ -102,25 +136,8 @@ class BlobStorage:
                 + timedelta(hours=1),  # SAS URL valid for 1 hour
             )
             sas_url = f"https://{self.blob_service_client.account_name}.blob.core.windows.net/{self.container_name}/{blob_name}?{sas_token}"
-            print(sas_url)
-            # exit(0)
             return sas_url
 
         except Exception as e:
             print(f"Error generating SAS URL: {str(e)}")
             return None
-
-
-# Example usage (to be run in an async context):
-# async def main():
-#     account_name = os.environ.get("BLOB_STORAGE_ACCOUNT_NAME")
-#     account_key = os.environ.get("BLOB_STORAGE_ACCOUNT_KEY")
-#     file_path = "data_ingestion_pipleine\ATech - Prospectus for exposure.pdf"
-#     metadata = {"key": "value"}
-#     blob_storage = BlobStorage(account_name, account_key)
-#     url = await blob_storage.upload_to_blob_storage(file_path, metadata, TYPE="IE")
-#     print(f"File URL: {url}")
-
-# if __name__ == "__main__":
-#     import asyncio
-#     asyncio.run(main())

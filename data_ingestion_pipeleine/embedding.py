@@ -236,5 +236,4 @@ class EmbeddingIndexer:
             # await self.search_index_client.close()
             # await self.search_client.close()
         except Exception as e:
-            raise e
             print(f"Error in embedding and indexing chunks: {e}")

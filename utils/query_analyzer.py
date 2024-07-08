@@ -11,7 +11,11 @@ class QueryAnalyzer:
 
     async def intents_extraction(task_trigger, query):
         prompt = PromptSet.intent_extraction
-        response = await task_trigger.generate_responses(query, prompt)
+        message = [
+            {"role": "system", "content": prompt},
+            {"role": "user", "content": query},
+        ]
+        response = await task_trigger.generate_responses(query, message)
 
         return response
 
@@ -35,6 +39,9 @@ class QueryAnalyzer:
 
         try:
             response = await task_trigger.generate_responses(query, context)
+            completion_tokens = response["completion_tokens"]
+            prompt_tokens = response["prompt_tokens"]
+            response = response["response"]
             response = json.loads(response)
             response = response["extracted_search_term"]
             if len(response) == 0:
@@ -42,4 +49,4 @@ class QueryAnalyzer:
         except Exception as e:
             response = query
 
-        return response
+        return response, completion_tokens, prompt_tokens

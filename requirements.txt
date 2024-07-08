@@ -47,3 +47,4 @@ mypy
 fpdf
 azure-cosmos
 PyPDF2
+azure-keyvault-secrets

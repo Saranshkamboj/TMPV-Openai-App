@@ -34,6 +34,7 @@ class Pipeline:
                 openai_client=openai_client,
                 search_index_name=search_index_name,
             )
+            self.blob_service_client = blob_service_client
             self.model_name = model_name
         except Exception as e:
             print(f"Error initializing components: {e}")
@@ -65,7 +66,13 @@ class Pipeline:
                     response_to_send = "Extracting data from file..."
                 elif count == 2:
                     print("EXTRACTING DATA FROM FILE ...")
-                    extracted_data = await function(file_url, file_path)
+                    extracted_data = await function(
+                        file_url,
+                        file_path,
+                        self.model_name,
+                        self.blob_service_client,
+                        file_name,
+                    )
                     response_to_send = "Chunking extracted data..."
                 elif count == 3:
                     print("CHUNKING EXTRACTED DATA ...")
@@ -93,7 +100,6 @@ class Pipeline:
                 yield output
 
         except Exception as e:
-            raise e
             print(f"Error running pipeline: {e}")
 
 

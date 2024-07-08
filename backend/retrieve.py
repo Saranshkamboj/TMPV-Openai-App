@@ -14,7 +14,7 @@ class ContextRetrieval:
 
         embedding = await self.openai_client.embeddings.create(
             input=[text], model="tmpv-dev-embedding"
-        )       
+        )
 
         return embedding.data[0].embedding
 
@@ -34,7 +34,7 @@ class ContextRetrieval:
             filter_query = None
         else:
             filter_query = f"model_name eq '{model_name}'"
-        print("filter query: ", filter_query)
+
         vector_query = VectorizedQuery(
             vector=await self.get_embeddings(query),
             k_nearest_neighbors=knn,
@@ -50,15 +50,17 @@ class ContextRetrieval:
         context = ""
         token_count = 0
         for item in result:
-            context += f"Model Name: {item['model_name']}\nPage Number: {item['page_number']}\nText: {item['text']}\n\n"
-            formated_context.append(
-                {
-                    "search_score": item["@search.score"],
-                    "page_no": item["page_number"],
-                    "content": item["text"],
-                }
-            )
-            token_count += ContextRetrieval.count_tokens(context)
+            if item["@search.score"] >= 0.8:
+                context += f"Model Name: {item['model_name']}\nPage Number: {item['page_number']}\nText: {item['text']}\n\n Table: {item['tables']}"
+                formated_context.append(
+                    {
+                        "search_score": item["@search.score"],
+                        "page_no": item["page_number"],
+                        "content": item["text"],
+                        "filename": item["file_name"],
+                    }
+                )
+                token_count += ContextRetrieval.count_tokens(context)
 
         context = context.replace("\\n", "")
         return formated_context, context

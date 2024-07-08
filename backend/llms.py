@@ -33,4 +33,8 @@ class LLMRsponseGeneration:
             temperature=0.1,
         )
 
-        return response.choices[0].message.content
+        return {
+            "response": response.choices[0].message.content,
+            "completion_tokens": response.usage.completion_tokens,
+            "prompt_tokens": response.usage.prompt_tokens,
+        }

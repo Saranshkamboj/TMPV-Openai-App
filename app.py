@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
+
 import os
 import time
 import re
@@ -5,17 +9,11 @@ from datetime import datetime
 import json
 import uvicorn
 from fastapi import FastAPI, Form, Request, Response
-
-
+import logging
 from fastapi import FastAPI, UploadFile, Form, BackgroundTasks
 from typing import List
-from dotenv import load_dotenv
-
-load_dotenv(override=True)
-
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-
 from azure.identity.aio import DefaultAzureCredential
 from azure.core.credentials import AzureKeyCredential
 from azure.storage.blob.aio import BlobServiceClient
@@ -27,8 +25,6 @@ from utils.query_analyzer import QueryAnalyzer
 from backend.retrieve import ContextRetrieval
 from prompts import PromptSet
 from utils.blob import connect_blob
-
-
 from data_ingestion_pipeleine.pipeline import Pipeline
 from backend.llms import LLMRsponseGeneration
 from data_ingestion_pipeleine.blob_storage import BlobStorage
@@ -47,6 +43,23 @@ AZURE_OPENAI_VERSION = os.getenv("AZURE_OPENAI_VERSION")
 AZURE_SEARCH_SERVICE_ENDPOINT = os.getenv("AZURE_SEARCH_SERVICE_ENDPOINT")
 AZURE_SEARCH_API_KEY = os.getenv("AZURE_SEARCH_API_KEY")
 AZURE_SEARCH_INDEX_NAME = os.getenv("AZURE_SEARCH_INDEX_NAME")
+
+"""Following are the different logs at different routes which saves information and errors at different locations and saved in the logs directory."""
+loggers = {}
+for route in [
+    "Vehicles-Logs",
+]:
+    logger = logging.getLogger(route)
+    logger.setLevel(logging.ERROR)
+    logger.setLevel(logging.INFO)
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+    file_handler = logging.FileHandler(f"./logs/{route}.log")
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    loggers[route] = logger
+    logger = ""
 
 
 blob_service_client = BlobServiceClient(
@@ -86,11 +99,8 @@ search_client = SearchClient(
     credential=AzureKeyCredential(AZURE_SEARCH_API_KEY),
 )
 
-
 # Creating a FastAPI object
 app = FastAPI()
-
-pipeline = Pipeline()
 
 
 async def upload_file(file, contents, model_name):
@@ -98,6 +108,8 @@ async def upload_file(file, contents, model_name):
         return {"success": False, "error": "No file was uploaded."}
 
     try:
+        pipeline = Pipeline()
+
         # Get file metadata
         file_name = file.filename
         search_index_filename = re.sub(r"[^\w-]", "", file_name)
@@ -137,7 +149,7 @@ async def upload_file(file, contents, model_name):
             file_path, file_name, search_index_name
         ):
             final_output.update({"timestamp": datetime.utcnow().isoformat()})
-            await bs.upload_json(final_output, f"{file_name}-uf.json")
+            print("File Indexed")
 
     except Exception as e:
         return {"success": False, "error": str(e)}
@@ -147,62 +159,23 @@ async def upload_file(file, contents, model_name):
 async def submit_form(
     background_tasks: BackgroundTasks, file: UploadFile, model_name: str = Form()
 ):
-    file_name = file.filename
-    contents = await file.read()
-    file_name = f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{file_name}"
-    background_tasks.add_task(upload_file, file, contents, model_name)
-    x = BlobStorage(blob_service_client)
-    return x.generate_sas_url(f"{file_name}-uf.json") 
-
-
-@app.post("/vehicle-insights")
-async def vehicle_insights(query: str = Form(), chat_session_id: str = Form()):
-
-    search_index_name = AZURE_SEARCH_INDEX_NAME
-
     try:
-        search_client = SearchClient(
-            endpoint=AZURE_SEARCH_SERVICE_ENDPOINT,
-            index_name=search_index_name,
-            credential=AzureKeyCredential(AZURE_SEARCH_API_KEY),
-        )
-
-        task_trigger = LLMRsponseGeneration(
-            search_client, openai_client, search_index_client, search_index_name
-        )
-        bs = BlobStorage(blob_service_client)
-        # intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
-        search_term = await QueryAnalyzer.query_rephraser(
-            chat_session_id, task_trigger, query
-        )
-        print("\n\n", search_term, "\n\n")
-        cr = ContextRetrieval(search_client, openai_client)
-        context = await cr.retrieve(search_term, 30)
-        print(context)
-        prompt = PromptSet.doc_specific_prompt
-        prompt = prompt.replace("{context}", context)
-
-        if await connect_blob(chat_session_id, "blob_status"):
-            chat_history = await connect_blob(chat_session_id, "download")
-            context = (
-                [{"role": "system", "content": prompt}]
-                + chat_history
-                + [{"role": "user", "content": query}]
-            )
-        else:
-            context = [{"role": "system", "content": prompt}] + [
-                {"role": "user", "content": query}
-            ]
-
-        response = await task_trigger.generate_responses(query, context)
-        context_to_store = context[1:] + [{"role": "assistant", "content": response}]
-        await connect_blob(chat_session_id, "upload", context_to_store)
-
-        return {"success": True, "response": response}
-
+        file_name = file.filename
+        contents = await file.read()
+        file_name = f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{file_name}"
+        background_tasks.add_task(upload_file, file, contents, model_name)
     except Exception as e:
-        raise e
-        return {"success": False, "error": str(e)}
+        loggers["Vehicles-Logs"].exception(f"Exception occurred. {e}")
+    return f"Uploading {file_name}"
+
+
+@app.post("/delete-records")
+async def deelte_records(id: str = Form(), no_of_records: int = Form()):
+    for i in range(no_of_records):
+        doc_id = f"{id}_{i+1}_{i+1}"
+        documents = {"id": doc_id}
+        delete_documents_batch = search_client.delete_documents(documents=documents)
+        print("deleted", id)
 
 
 @app.post("/vehicle-insights-v2")
@@ -216,20 +189,44 @@ async def vehicle_insights(request: Request):
     search_index_name = AZURE_SEARCH_INDEX_NAME
 
     try:
+        completion_tokens = 0
+        prompt_tokens = 0
 
         task_trigger = LLMRsponseGeneration(
             search_client, openai_client, search_index_client, search_index_name
         )
 
-        # intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+        response = await QueryAnalyzer.intents_extraction(task_trigger, query)
+        intents = json.loads(response["response"])["entities"]
+        completion_tokens += response["completion_tokens"]
+        prompt_tokens += response["prompt_tokens"]
 
-        search_term = await QueryAnalyzer.query_rephraser(messages, task_trigger, query)
-        print("\n\nSEARCH TERM: ", search_term, "\n\n")
+        query = ""
+        if "others" in intents.keys() and len(intents.keys()) == 1:
+            response = "I'm sorry, but I am a Tata Motors chatbot and I am here to assist you with queries related to Tata Motors cars."
+            return {
+                "success": True,
+                "context": [],
+                "context_retrieval_time": 0,
+                "generated_response": response,
+                "generated_response_time": 0,
+                "rephrased_query": "",
+            }
+
+        for k, v in intents.items():
+            if k == "others":
+                continue
+            query += " " + v
+
+        search_term, completion_tokens, prompt_tokens = (
+            await QueryAnalyzer.query_rephraser(messages, task_trigger, query)
+        )
+        completion_tokens += completion_tokens
+        prompt_tokens += prompt_tokens
         cr = ContextRetrieval(search_client, openai_client)
 
         start_time = time.time()
         formatted_context, context = await cr.retrieve(search_term, model_name, 5)
-        print(context)
         end_time = time.time()
         context_retrieval_time = end_time - start_time
 
@@ -244,24 +241,34 @@ async def vehicle_insights(request: Request):
         prompt = PromptSet.doc_specific_prompt
         prompt = prompt.replace("{context}", context)
         context = (
-            [{"role": "system", "content": prompt}]
-            + chat_history
-            + [{"role": "user", "content": query}]
+            chat_history
+            + [{"role": "system", "content": prompt}]
+            + [
+                {
+                    "role": "user",
+                    "content": query,
+                }
+            ]
         )
         response = await task_trigger.generate_responses(query, context)
         end_time = time.time()
         generated_response_time = end_time - start_time
+        completion_tokens += response["completion_tokens"]
+        prompt_tokens += response["prompt_tokens"]
 
         return {
             "success": True,
             "context": formatted_context,
             "context_retrieval_time": context_retrieval_time,
-            "generated_response": response,
+            "generated_response": response["response"],
             "generated_response_time": generated_response_time,
             "rephrased_query": search_term,
+            "prompt_tokens": prompt_tokens,
+            "completion_tokens": completion_tokens,
         }
 
     except Exception as e:
+        loggers["Vehicles-Logs"].exception(f"Exception occurred. {e}")
         return {"success": False, "error": str(e)}
 
 
@@ -277,4 +284,4 @@ app.add_middleware(
 
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, workers=4, reload=False)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, workers=4, reload=True)

@@ -35,12 +35,6 @@ class DocumentExtractor:
             else:
                 next_chunk = data[i + 1]["text"]
 
-            print("*" * 80, "\n\n")
-            print(prev_chunk)
-            print("*" * 80, "\n\n")
-            print(current_chunk)
-            print("*" * 80, "\n\n")
-            print(next_chunk)
             prev_chunk_words = prev_chunk.split(" ")
             next_chunk_words = next_chunk.split(" ")
             completed_chunk = (
@@ -52,11 +46,12 @@ class DocumentExtractor:
             )
             data[i]["text"] = completed_chunk
             prev_chunk = current_chunk
-            print("*" * 80, "\n\n")
-            print(completed_chunk)
+
         return data
 
-    async def extract_data_from_url(self, document_url, file_path):
+    async def extract_data_from_url(
+        self, document_url, file_path, model_name, blob_service_client, file_name
+    ):
         """
         Extracts text and HTML tables from a PDF.
 
@@ -70,19 +65,27 @@ class DocumentExtractor:
         try:
             document_length = DocumentExtractor.count_pdf_pages(file_path)
 
-            for i in range(document_length // 2000 + 1):
+            loop_count = document_length // 2000 + 1
+            count = 0
+            for i in range(loop_count):
                 start = 2000 * i + 1
-                end = 2000 * (i + 1)
+                if loop_count != count:
+                    end = 2000 * (i + 1)
+                else:
+                    end = document_length % 2000
+
                 poller = await self.client.begin_analyze_document_from_url(
                     model_id="prebuilt-layout",
                     document_url=document_url,
-                    pages=f"{start-end}",
+                    pages=f"{start}-{end}",
                 )
                 result = await poller.result()
 
                 for page_num, page in enumerate(result.pages):
                     page_data = {
-                        "page_number": str(page_num + 1),  # Convert to 1-based indexing
+                        "page_number": str(
+                            page_num + start
+                        ),  # Convert to 1-based indexing
                         "text": "",
                         "tables": [],
                     }
@@ -91,7 +94,7 @@ class DocumentExtractor:
 
                     if len(page_data["text"]) < 500:
                         print(len(page_data["text"]))
-                        # print(page_data['text'])
+
                     # Process tables and convert to HTML
                     if result.tables:
                         for table_idx, table in enumerate(result.tables):
@@ -114,6 +117,12 @@ class DocumentExtractor:
                             page_data["tables"].append(table_html)
 
                     extracted_data.append(page_data)
+            from .blob_storage import BlobStorage
+
+            blob_storage_client = BlobStorage(blob_storage_client=blob_service_client)
+            await blob_storage_client.upload_extracted_text(
+                extracted_data, file_name, model_name
+            )
             extracted_data = DocumentExtractor.chunk_overlapping(extracted_data)
 
         except Exception as e:
