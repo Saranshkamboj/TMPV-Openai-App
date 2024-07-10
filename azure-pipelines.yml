@@ -71,11 +71,11 @@ stages:
                     appSettings: '-SCM_DO_BUILD_DURING_DEPLOYMENT true'
 
   - stage: Release
-    displayName: 'Release Stage'
+    displayName: 'Prod Release Stage'
     dependsOn: Build
     jobs:
       - deployment: DeployToAppService
-        displayName: 'Deploy to Azure App Service'
+        displayName: 'Deploy to prod Azure App Service'
         environment: 'prod'
         strategy:
           runOnce:
