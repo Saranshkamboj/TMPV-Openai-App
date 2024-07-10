@@ -69,3 +69,27 @@ stages:
                     package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
                     startUpCommand: 'gunicorn -w 4 -k uvicorn.workers.UvicornWorker app:app'
                     appSettings: '-SCM_DO_BUILD_DURING_DEPLOYMENT true'
+
+  - stage: Release
+    displayName: 'Release Stage'
+    dependsOn: Build
+    jobs:
+      - deployment: DeployToAppService
+        displayName: 'Deploy to Azure App Service'
+        environment: 'prod'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: drop
+
+                - task: AzureWebApp@1
+                  displayName: 'Deploy to Azure Web App'
+                  inputs:
+                    azureSubscription: '$(serviceConnection)'
+                    appType: 'webAppLinux'
+                    appName: '$(appServiceNameProd)'
+                    package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+                    startUpCommand: 'gunicorn -w 4 -k uvicorn.workers.UvicornWorker app:app'
+                    appSettings: '-SCM_DO_BUILD_DURING_DEPLOYMENT true'
