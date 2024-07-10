@@ -1,0 +1,274 @@
+2024-07-08 13:55:36,874 - Vehicles-Logs - ERROR - Exception occurred. Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 197, in vehicle_insights
+    intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 14, in intents_extraction
+    response = await task_trigger.generate_responses(query, prompt)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\llms.py", line 28, in generate_responses
+    response = await self.openai_client.chat.completions.create(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\resources\chat\completions.py", line 1289, in create
+    return await self._post(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1805, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1503, in request
+    return await self._request(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1599, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+2024-07-08 13:55:36,874 - Vehicles-Logs - ERROR - Exception occurred. Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 197, in vehicle_insights
+    intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 14, in intents_extraction
+    response = await task_trigger.generate_responses(query, prompt)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\llms.py", line 28, in generate_responses
+    response = await self.openai_client.chat.completions.create(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\resources\chat\completions.py", line 1289, in create
+    return await self._post(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1805, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1503, in request
+    return await self._request(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1599, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+2024-07-08 14:53:36,495 - Vehicles-Logs - ERROR - Exception occurred. Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 197, in vehicle_insights
+    intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 18, in intents_extraction
+    response = await task_trigger.generate_responses(query, prompt)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\llms.py", line 28, in generate_responses
+    response = await self.openai_client.chat.completions.create(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\resources\chat\completions.py", line 1289, in create
+    return await self._post(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1805, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1503, in request
+    return await self._request(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1599, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+2024-07-08 14:53:36,495 - Vehicles-Logs - ERROR - Exception occurred. Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 197, in vehicle_insights
+    intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 18, in intents_extraction
+    response = await task_trigger.generate_responses(query, prompt)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\llms.py", line 28, in generate_responses
+    response = await self.openai_client.chat.completions.create(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\resources\chat\completions.py", line 1289, in create
+    return await self._post(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1805, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1503, in request
+    return await self._request(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1599, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+2024-07-08 14:53:50,010 - Vehicles-Logs - ERROR - Exception occurred. Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 197, in vehicle_insights
+    intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 18, in intents_extraction
+    response = await task_trigger.generate_responses(query, prompt)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\llms.py", line 28, in generate_responses
+    response = await self.openai_client.chat.completions.create(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\resources\chat\completions.py", line 1289, in create
+    return await self._post(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1805, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1503, in request
+    return await self._request(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1599, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+2024-07-08 14:53:50,010 - Vehicles-Logs - ERROR - Exception occurred. Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 197, in vehicle_insights
+    intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 18, in intents_extraction
+    response = await task_trigger.generate_responses(query, prompt)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\llms.py", line 28, in generate_responses
+    response = await self.openai_client.chat.completions.create(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\resources\chat\completions.py", line 1289, in create
+    return await self._post(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1805, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1503, in request
+    return await self._request(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1599, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': '\'\\n                            Please identify the intents of the following query and provide subqueries that fully capture the context of each intent. don\\\'t shorten the subqueries One of the intents is "Vehicle", and others can vary. It is crucial not to lose context in the subqueries. Present the result in the specified JSON format:\\n                            \\n                            {\\n                            "entities": {\\n                                "<intent1>": "<query1>",\\n                                "<intent2>": "<query2>",\\n                                "<intent3>": "<query3>",\\n                                ...\\n                            },\\n                            "justification": "<Reasoning behind extracted intents and subqueries>"\\n                        }\\n\\n                        Ensure the intents are accurately identified, and the subqueries are contextually complete. Additionally, provide a clear justification for your choices.\\n                        \\n                        Note: strictly do not add any other new keys in the repsonse json.\\n                        \\n                        \' is not of type \'array\' - \'messages\'', 'type': 'invalid_request_error', 'param': None, 'code': None}}
+2024-07-08 14:56:42,022 - Vehicles-Logs - ERROR - Exception occurred. LLMRsponseGeneration.generate_responses() missing 1 required positional argument: 'message'
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 197, in vehicle_insights
+    intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 18, in intents_extraction
+    response = await task_trigger.generate_responses(message)
+TypeError: LLMRsponseGeneration.generate_responses() missing 1 required positional argument: 'message'
+2024-07-08 14:56:42,022 - Vehicles-Logs - ERROR - Exception occurred. LLMRsponseGeneration.generate_responses() missing 1 required positional argument: 'message'
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 197, in vehicle_insights
+    intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 18, in intents_extraction
+    response = await task_trigger.generate_responses(message)
+TypeError: LLMRsponseGeneration.generate_responses() missing 1 required positional argument: 'message'
+2024-07-08 15:07:36,540 - Vehicles-Logs - ERROR - Exception occurred. Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 198, in vehicle_insights
+    intents = json.loads(intents)["entities"]
+  File "C:\Program Files\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-07-08 15:07:36,540 - Vehicles-Logs - ERROR - Exception occurred. Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 198, in vehicle_insights
+    intents = json.loads(intents)["entities"]
+  File "C:\Program Files\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-07-08 15:08:32,073 - Vehicles-Logs - ERROR - Exception occurred. Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 199, in vehicle_insights
+    intents = json.loads(intents)["entities"]
+  File "C:\Program Files\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-07-08 15:08:32,073 - Vehicles-Logs - ERROR - Exception occurred. Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 199, in vehicle_insights
+    intents = json.loads(intents)["entities"]
+  File "C:\Program Files\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-07-08 15:13:31,925 - Vehicles-Logs - ERROR - Exception occurred. Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 199, in vehicle_insights
+    intents = json.loads(intents)["entities"]
+  File "C:\Program Files\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-07-08 15:13:31,925 - Vehicles-Logs - ERROR - Exception occurred. Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 199, in vehicle_insights
+    intents = json.loads(intents)["entities"]
+  File "C:\Program Files\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-07-08 15:50:47,283 - Vehicles-Logs - ERROR - Exception occurred. local variable 'search_term' referenced before assignment
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 209, in vehicle_insights
+    "rephrased_query": search_term,
+UnboundLocalError: local variable 'search_term' referenced before assignment
+2024-07-08 15:50:47,283 - Vehicles-Logs - ERROR - Exception occurred. local variable 'search_term' referenced before assignment
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 209, in vehicle_insights
+    "rephrased_query": search_term,
+UnboundLocalError: local variable 'search_term' referenced before assignment
+2024-07-08 16:42:33,050 - Vehicles-Logs - ERROR - Exception occurred. 'CompletionUsage' object has no attribute 'input_tokens'
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 197, in vehicle_insights
+    intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 18, in intents_extraction
+    response = await task_trigger.generate_responses(query, message)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\llms.py", line 36, in generate_responses
+    print(response.usage.completion_tokens, response.usage.input_tokens)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\pydantic\main.py", line 811, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'CompletionUsage' object has no attribute 'input_tokens'
+2024-07-08 16:42:33,050 - Vehicles-Logs - ERROR - Exception occurred. 'CompletionUsage' object has no attribute 'input_tokens'
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 197, in vehicle_insights
+    intents = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 18, in intents_extraction
+    response = await task_trigger.generate_responses(query, message)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\llms.py", line 36, in generate_responses
+    print(response.usage.completion_tokens, response.usage.input_tokens)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\pydantic\main.py", line 811, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'CompletionUsage' object has no attribute 'input_tokens'
+2024-07-08 16:56:27,558 - Vehicles-Logs - ERROR - Exception occurred. string indices must be integers
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 222, in vehicle_insights
+    search_term = response["response"]
+TypeError: string indices must be integers
+2024-07-08 16:56:27,558 - Vehicles-Logs - ERROR - Exception occurred. string indices must be integers
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 222, in vehicle_insights
+    search_term = response["response"]
+TypeError: string indices must be integers
+2024-07-08 17:05:50,104 - Vehicles-Logs - ERROR - Exception occurred. local variable 'completion_tokens' referenced before assignment
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 222, in vehicle_insights
+    await QueryAnalyzer.query_rephraser(messages, task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 52, in query_rephraser
+    return response, completion_tokens, prompt_tokens
+UnboundLocalError: local variable 'completion_tokens' referenced before assignment
+2024-07-08 17:05:50,104 - Vehicles-Logs - ERROR - Exception occurred. local variable 'completion_tokens' referenced before assignment
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 222, in vehicle_insights
+    await QueryAnalyzer.query_rephraser(messages, task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 52, in query_rephraser
+    return response, completion_tokens, prompt_tokens
+UnboundLocalError: local variable 'completion_tokens' referenced before assignment
+2024-07-08 17:06:54,469 - Vehicles-Logs - ERROR - Exception occurred. string indices must be integers
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 222, in vehicle_insights
+    await QueryAnalyzer.query_rephraser(messages, task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 50, in query_rephraser
+    raise e
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 43, in query_rephraser
+    completion_tokens = response["completion_tokens"]
+TypeError: string indices must be integers
+2024-07-08 17:06:54,469 - Vehicles-Logs - ERROR - Exception occurred. string indices must be integers
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 222, in vehicle_insights
+    await QueryAnalyzer.query_rephraser(messages, task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 50, in query_rephraser
+    raise e
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 43, in query_rephraser
+    completion_tokens = response["completion_tokens"]
+TypeError: string indices must be integers
+2024-07-08 17:08:03,941 - Vehicles-Logs - ERROR - Exception occurred. string indices must be integers
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 222, in vehicle_insights
+    await QueryAnalyzer.query_rephraser(messages, task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 51, in query_rephraser
+    raise e
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 44, in query_rephraser
+    completion_tokens = response["completion_tokens"]
+TypeError: string indices must be integers
+2024-07-08 17:08:03,941 - Vehicles-Logs - ERROR - Exception occurred. string indices must be integers
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 222, in vehicle_insights
+    await QueryAnalyzer.query_rephraser(messages, task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 51, in query_rephraser
+    raise e
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 44, in query_rephraser
+    completion_tokens = response["completion_tokens"]
+TypeError: string indices must be integers
