@@ -272,3 +272,141 @@ Traceback (most recent call last):
   File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 44, in query_rephraser
     completion_tokens = response["completion_tokens"]
 TypeError: string indices must be integers
+2024-07-09 16:20:10,839 - Vehicles-Logs - ERROR - Exception occurred. Error code: 400 - {'error': {'message': "The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: https://go.microsoft.com/fwlink/?linkid=2198766", 'type': None, 'param': 'prompt', 'code': 'content_filter', 'status': 400, 'innererror': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_result': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': True, 'severity': 'medium'}}}}}
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 199, in vehicle_insights
+    response = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 18, in intents_extraction
+    response = await task_trigger.generate_responses(query, message)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\llms.py", line 28, in generate_responses
+    response = await self.openai_client.chat.completions.create(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\resources\chat\completions.py", line 1289, in create
+    return await self._post(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1805, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1503, in request
+    return await self._request(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1599, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': "The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: https://go.microsoft.com/fwlink/?linkid=2198766", 'type': None, 'param': 'prompt', 'code': 'content_filter', 'status': 400, 'innererror': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_result': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': True, 'severity': 'medium'}}}}}
+2024-07-09 16:20:10,839 - Vehicles-Logs - ERROR - Exception occurred. Error code: 400 - {'error': {'message': "The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: https://go.microsoft.com/fwlink/?linkid=2198766", 'type': None, 'param': 'prompt', 'code': 'content_filter', 'status': 400, 'innererror': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_result': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': True, 'severity': 'medium'}}}}}
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 199, in vehicle_insights
+    response = await QueryAnalyzer.intents_extraction(task_trigger, query)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\utils\query_analyzer.py", line 18, in intents_extraction
+    response = await task_trigger.generate_responses(query, message)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\llms.py", line 28, in generate_responses
+    response = await self.openai_client.chat.completions.create(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\resources\chat\completions.py", line 1289, in create
+    return await self._post(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1805, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1503, in request
+    return await self._request(
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\openai\_base_client.py", line 1599, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': "The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: https://go.microsoft.com/fwlink/?linkid=2198766", 'type': None, 'param': 'prompt', 'code': 'content_filter', 'status': 400, 'innererror': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_result': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': True, 'severity': 'medium'}}}}}
+2024-07-09 17:28:28,782 - Vehicles-Logs - ERROR - Exception occurred. Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 200, in vehicle_insights
+    intents = json.loads(response["response"])["entities"]
+  File "C:\Program Files\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-07-09 17:28:28,782 - Vehicles-Logs - ERROR - Exception occurred. Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 200, in vehicle_insights
+    intents = json.loads(response["response"])["entities"]
+  File "C:\Program Files\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Program Files\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-07-09 20:10:35,635 - Vehicles-Logs - ERROR - Exception occurred. Session.request() got an unexpected keyword argument 'text'
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 230, in vehicle_insights
+    formatted_context, context = await cr.retrieve(search_term, model_name, 5)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\retrieve.py", line 52, in retrieve
+    for item in result:
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\search\documents\_paging.py", line 54, in __next__
+    return next(self._page_iterator)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\paging.py", line 75, in __next__
+    self._response = self._get_next(self.continuation_token)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\search\documents\_paging.py", line 124, in _get_next_cb
+    return self._client.documents.search_post(search_request=self._initial_query.request, **self._kwargs)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\tracing\decorator.py", line 94, in wrapper_use_tracer
+    return func(*args, **kwargs)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\search\documents\_generated\operations\_documents_operations.py", line 777, in search_post
+    pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 229, in run
+    return first_node.send(pipeline_request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  [Previous line repeated 2 more times]
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\policies\_redirect.py", line 197, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\policies\_retry.py", line 532, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  [Previous line repeated 2 more times]
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 118, in send
+    self._sender.send(request.http_request, **request.context.options),
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\transport\_requests_basic.py", line 355, in send
+    response = self.session.request(  # type: ignore
+TypeError: Session.request() got an unexpected keyword argument 'text'
+2024-07-09 20:10:35,635 - Vehicles-Logs - ERROR - Exception occurred. Session.request() got an unexpected keyword argument 'text'
+Traceback (most recent call last):
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\app.py", line 230, in vehicle_insights
+    formatted_context, context = await cr.retrieve(search_term, model_name, 5)
+  File "C:\Users\vkhrm2373.ctp\Downloads\TATA MOTORS OPENAI\backend\retrieve.py", line 52, in retrieve
+    for item in result:
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\search\documents\_paging.py", line 54, in __next__
+    return next(self._page_iterator)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\paging.py", line 75, in __next__
+    self._response = self._get_next(self.continuation_token)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\search\documents\_paging.py", line 124, in _get_next_cb
+    return self._client.documents.search_post(search_request=self._initial_query.request, **self._kwargs)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\tracing\decorator.py", line 94, in wrapper_use_tracer
+    return func(*args, **kwargs)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\search\documents\_generated\operations\_documents_operations.py", line 777, in search_post
+    pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 229, in run
+    return first_node.send(pipeline_request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  [Previous line repeated 2 more times]
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\policies\_redirect.py", line 197, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\policies\_retry.py", line 532, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 86, in send
+    response = self.next.send(request)
+  [Previous line repeated 2 more times]
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\_base.py", line 118, in send
+    self._sender.send(request.http_request, **request.context.options),
+  File "C:\Users\vkhrm2373.ctp\AppData\Roaming\Python\Python310\site-packages\azure\core\pipeline\transport\_requests_basic.py", line 355, in send
+    response = self.session.request(  # type: ignore
+TypeError: Session.request() got an unexpected keyword argument 'text'
