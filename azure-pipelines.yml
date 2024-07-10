@@ -1,5 +1,5 @@
 trigger:
-- none
+- main
 
 pool:
   vmImage: ubuntu-latest
@@ -67,4 +67,5 @@ stages:
                     appType: 'webAppLinux'
                     appName: '$(appServiceName)'
                     package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-                    startUpCommand: 'uvicorn application:application --host=0.0.0.0 --port=8000'
+                    startUpCommand: 'python -m uvicorn app:app --host=0.0.0.0 --port=8000'
+                    appSettings: '-SCM_DO_BUILD_DURING_DEPLOYMENT true'
