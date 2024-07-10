@@ -27,8 +27,8 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              python -m venv venv
-              . venv/bin/activate
+              python -m venv antenv
+              . antenv/bin/activate
               pip install -r requirements.txt
 
         - task: ArchiveFiles@2
