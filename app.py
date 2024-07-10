@@ -18,6 +18,8 @@ from azure.identity.aio import DefaultAzureCredential
 from azure.core.credentials import AzureKeyCredential
 from azure.storage.blob.aio import BlobServiceClient
 from openai import AsyncAzureOpenAI
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
 from azure.ai.formrecognizer.aio import DocumentAnalysisClient
 from azure.search.documents.indexes import SearchIndexClient
 from azure.search.documents import SearchClient
@@ -29,26 +31,21 @@ from data_ingestion_pipeleine.pipeline import Pipeline
 from backend.llms import LLMRsponseGeneration
 from data_ingestion_pipeleine.blob_storage import BlobStorage
 
-
+# Load environment variables
 BLOB_STORAGE_ACCOUNT_NAME = os.getenv("BLOB_STORAGE_ACCOUNT_NAME")
 BLOB_STORAGE_ACCOUNT_KEY = os.getenv("BLOB_STORAGE_ACCOUNT_KEY")
-
 DOCUMENTINTELLIGENCE_ENDPOINT = os.getenv("DOCUMENTINTELLIGENCE_ENDPOINT")
 DOCUMENTINTELLIGENCE_API_KEY = os.getenv("DOCUMENTINTELLIGENCE_API_KEY")
-
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
 AZURE_OPENAI_VERSION = os.getenv("AZURE_OPENAI_VERSION")
-
 AZURE_SEARCH_SERVICE_ENDPOINT = os.getenv("AZURE_SEARCH_SERVICE_ENDPOINT")
 AZURE_SEARCH_API_KEY = os.getenv("AZURE_SEARCH_API_KEY")
 AZURE_SEARCH_INDEX_NAME = os.getenv("AZURE_SEARCH_INDEX_NAME")
 
-"""Following are the different logs at different routes which saves information and errors at different locations and saved in the logs directory."""
+# Set up logging for different routes
 loggers = {}
-for route in [
-    "Vehicles-Logs",
-]:
+for route in ["Vehicles-Logs"]:
     logger = logging.getLogger(route)
     logger.setLevel(logging.ERROR)
     logger.setLevel(logging.INFO)
@@ -61,7 +58,7 @@ for route in [
     loggers[route] = logger
     logger = ""
 
-
+# Initialize Azure services
 blob_service_client = BlobServiceClient(
     account_url=f"https://{BLOB_STORAGE_ACCOUNT_NAME}.blob.core.windows.net/",
     credential=(
@@ -77,7 +74,6 @@ openai_client = AsyncAzureOpenAI(
     azure_endpoint=AZURE_OPENAI_ENDPOINT,
 )
 
-
 document_analysis_client = DocumentAnalysisClient(
     endpoint=DOCUMENTINTELLIGENCE_ENDPOINT,
     credential=(
@@ -86,7 +82,6 @@ document_analysis_client = DocumentAnalysisClient(
         else AzureKeyCredential(DOCUMENTINTELLIGENCE_API_KEY)
     ),
 )
-
 
 search_index_client = SearchIndexClient(
     endpoint=AZURE_SEARCH_SERVICE_ENDPOINT,
@@ -99,11 +94,22 @@ search_client = SearchClient(
     credential=AzureKeyCredential(AZURE_SEARCH_API_KEY),
 )
 
-# Creating a FastAPI object
+# Create a FastAPI object
 app = FastAPI()
 
 
 async def upload_file(file, contents, model_name):
+    """
+    Upload a file to Azure Blob Storage and index it using Azure Cognitive Search.
+
+    Args:
+        file (UploadFile): The file to be uploaded.
+        contents (bytes): The contents of the file.
+        model_name (str): The model name to use for indexing.
+
+    Returns:
+        dict: A dictionary indicating success or failure and any errors.
+    """
     if not file:
         return {"success": False, "error": "No file was uploaded."}
 
@@ -112,13 +118,11 @@ async def upload_file(file, contents, model_name):
 
         # Get file metadata
         file_name = file.filename
-        search_index_filename = re.sub(r"[^\w-]", "", file_name)
-        search_index_filename = search_index_filename.lower()
+        search_index_filename = re.sub(r"[^\w-]", "", file_name).lower()
         folder_path = "static"
-
         search_index_name = AZURE_SEARCH_INDEX_NAME
 
-        # Check if the folder exists
+        # Check if the folder exists, if not, create it
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         file_path = os.path.join(folder_path, file_name)
@@ -133,6 +137,7 @@ async def upload_file(file, contents, model_name):
             credential=AzureKeyCredential(AZURE_SEARCH_API_KEY),
         )
 
+        # Initialize pipeline components
         await pipeline.initialize_components(
             blob_service_client,
             openai_client,
@@ -145,6 +150,7 @@ async def upload_file(file, contents, model_name):
 
         bs = BlobStorage(blob_service_client)
 
+        # Run the pipeline and index the file
         async for final_output in pipeline.run_pipeline(
             file_path, file_name, search_index_name
         ):
@@ -159,6 +165,17 @@ async def upload_file(file, contents, model_name):
 async def submit_form(
     background_tasks: BackgroundTasks, file: UploadFile, model_name: str = Form()
 ):
+    """
+    Endpoint to handle file upload and indexing.
+
+    Args:
+        background_tasks (BackgroundTasks): FastAPI background tasks manager.
+        file (UploadFile): The file to be uploaded.
+        model_name (str): The model name to use for indexing.
+
+    Returns:
+        str: Message indicating the file is being uploaded.
+    """
     try:
         file_name = file.filename
         contents = await file.read()
@@ -170,17 +187,30 @@ async def submit_form(
 
 
 @app.post("/delete-records")
-async def deelte_records(id: str = Form(), no_of_records: int = Form()):
-    for i in range(no_of_records):
-        doc_id = f"{id}_{i+1}_{i+1}"
-        documents = {"id": doc_id}
-        delete_documents_batch = search_client.delete_documents(documents=documents)
-        print("deleted", id)
+async def delete_records(id: str = Form(), no_of_records: int = Form()):
+    """
+    Endpoint to delete records from Azure Cognitive Search.
+
+    Args:
+        id (str): The ID of the record to delete.
+        no_of_records (int): Number of records to delete.
+    """
+    documents = {"id": id}
+    delete_documents_batch = search_client.delete_documents(documents=documents)
+    print("deleted", id)
 
 
 @app.post("/vehicle-insights-v2")
 async def vehicle_insights(request: Request):
+    """
+    Endpoint to handle vehicle insights queries.
 
+    Args:
+        request (Request): The HTTP request containing query details.
+
+    Returns:
+        dict: Response containing the generated response and metadata.
+    """
     request = await request.body()
     request = json.loads(request)
     messages = request["messages"]
@@ -196,10 +226,29 @@ async def vehicle_insights(request: Request):
             search_client, openai_client, search_index_client, search_index_name
         )
 
-        response = await QueryAnalyzer.intents_extraction(task_trigger, query)
-        intents = json.loads(response["response"])["entities"]
-        completion_tokens += response["completion_tokens"]
-        prompt_tokens += response["prompt_tokens"]
+        with ThreadPoolExecutor() as executor:
+            # Schedule both functions to be run concurrently
+            future_rephraser = executor.submit(
+                lambda: asyncio.run(
+                    QueryAnalyzer.query_rephraser(messages, task_trigger, query)
+                )
+            )
+            future_extraction = executor.submit(
+                lambda: asyncio.run(
+                    QueryAnalyzer.intents_extraction(task_trigger, query)
+                )
+            )
+
+            # Wait for both functions to complete and get their results
+            search_term, completion_tokens, prompt_tokens = future_rephraser.result()
+            intents_response = future_extraction.result()
+
+        completion_tokens += completion_tokens
+        prompt_tokens += prompt_tokens
+
+        intents = json.loads(intents_response["response"])["entities"]
+        completion_tokens += intents_response["completion_tokens"]
+        prompt_tokens += intents_response["prompt_tokens"]
 
         query = ""
         if "others" in intents.keys() and len(intents.keys()) == 1:
@@ -218,11 +267,6 @@ async def vehicle_insights(request: Request):
                 continue
             query += " " + v
 
-        search_term, completion_tokens, prompt_tokens = (
-            await QueryAnalyzer.query_rephraser(messages, task_trigger, query)
-        )
-        completion_tokens += completion_tokens
-        prompt_tokens += prompt_tokens
         cr = ContextRetrieval(search_client, openai_client)
 
         start_time = time.time()
@@ -282,6 +326,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, workers=4, reload=True)
+    uvicorn.run("app:app", host="0.0.0.0", port=8005, workers=4, reload=False)
