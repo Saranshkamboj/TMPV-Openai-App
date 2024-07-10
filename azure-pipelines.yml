@@ -70,7 +70,7 @@ stages:
                     startUpCommand: 'gunicorn -w 4 -k uvicorn.workers.UvicornWorker app:app'
                     appSettings: '-SCM_DO_BUILD_DURING_DEPLOYMENT true'
 
-  - stage: Release
+  - stage: ProdRelease
     displayName: 'Prod Release Stage'
     dependsOn: Build
     jobs:
