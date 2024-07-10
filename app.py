@@ -226,22 +226,11 @@ async def vehicle_insights(request: Request):
             search_client, openai_client, search_index_client, search_index_name
         )
 
-        with ThreadPoolExecutor() as executor:
-            # Schedule both functions to be run concurrently
-            future_rephraser = executor.submit(
-                lambda: asyncio.run(
-                    QueryAnalyzer.query_rephraser(messages, task_trigger, query)
-                )
-            )
-            future_extraction = executor.submit(
-                lambda: asyncio.run(
-                    QueryAnalyzer.intents_extraction(task_trigger, query)
-                )
-            )
-
-            # Wait for both functions to complete and get their results
-            search_term, completion_tokens, prompt_tokens = future_rephraser.result()
-            intents_response = future_extraction.result()
+        # Wait for both functions to complete and get their results
+        search_term, completion_tokens, prompt_tokens = (
+            await QueryAnalyzer.query_rephraser(messages, task_trigger, query)
+        )
+        intents_response = await QueryAnalyzer.intents_extraction(task_trigger, query)
 
         completion_tokens += completion_tokens
         prompt_tokens += prompt_tokens
