@@ -32,6 +32,7 @@ types-beautifulsoup4
 ruff
 black
 pytest
+uvicorn
 pytest-asyncio
 pytest-snapshot
 coverage
